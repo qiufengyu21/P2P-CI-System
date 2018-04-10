@@ -8,7 +8,6 @@ public class CentralizedServer extends Thread {
 
 	public CentralizedServer(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
-		serverSocket.setSoTimeout(10000);
 	}
 
 	public void run() {
