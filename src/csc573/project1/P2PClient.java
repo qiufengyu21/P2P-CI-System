@@ -1,6 +1,5 @@
 package csc573.project1;
 
-import java.util.*;
 import java.io.*;
 import java.net.*;
 
