@@ -8,10 +8,9 @@ public class P2PClient {
 		String serverName = "localhost";
 		int port = PORT_NUMBER;
 		try {
-			System.out.println("Connecting to " + serverName + " on port " + port);
 			Socket client = new Socket(serverName, port);
 
-			System.out.println("Just connected to " + client.getRemoteSocketAddress());
+			System.out.println("Connected to " + client.getRemoteSocketAddress());
 			OutputStream outToServer = client.getOutputStream();
 			DataOutputStream out = new DataOutputStream(outToServer);
 
