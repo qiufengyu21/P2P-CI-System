@@ -1,2 +1,3 @@
-/CentralizedServer.class
-/P2PClient.class
+/Server.class
+/ServerHandler.class
+/Test.class
