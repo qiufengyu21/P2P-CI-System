@@ -1,0 +1,62 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+
+public class Client {
+	public static void main(String[] args) {
+		String serverIP = "localhost";
+		int serverPort = 7734;
+		Socket peerSocket = null;
+		Socket peerToPeerSocket = null;
+		DataInputStream inStream = null;
+		DataOutputStream outStream = null;
+		String hostname = null;
+		String clientInfo;
+
+		try {
+			peerSocket = new Socket(serverIP, serverPort);
+			inStream = new DataInputStream(peerSocket.getInputStream());
+			outStream = new DataOutputStream(peerSocket.getOutputStream());
+			hostname = java.net.InetAddress.getLocalHost().getHostAddress();
+			clientInfo = hostname + " " + "1.txt 2.txt 3.txt";
+			outStream.writeUTF("Hello from client");
+			outStream.writeUTF(clientInfo);
+
+			Scanner console = new Scanner(System.in);
+			System.out.print("Enter option: ");
+			int input = console.nextInt();
+			boolean connected = true;
+			while (connected) {
+
+				switch (input) {
+				case 1:
+					outStream.writeInt(1);
+					System.out.print("Enter option: ");
+					input = console.nextInt();
+					break;
+				case 2:
+					outStream.writeInt(2);
+					System.out.print("Enter option: ");
+					input = console.nextInt();
+					break;
+				case 0:
+					outStream.writeInt(0);
+					peerSocket.close();
+					connected = false;
+					console.close();
+					break;
+				default:
+					;
+				}
+			}
+
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
