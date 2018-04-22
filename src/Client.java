@@ -1,5 +1,6 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -21,10 +22,25 @@ public class Client {
 			inStream = new DataInputStream(peerSocket.getInputStream());
 			outStream = new DataOutputStream(peerSocket.getOutputStream());
 			hostname = java.net.InetAddress.getLocalHost().getHostAddress();
-			clientInfo = hostname + " " + "1.txt 2.txt 3.txt";
+
+			File f = new File("D:\\Projects\\P2P-CI-System\\RFCs");
+			File fileArray[] = f.listFiles();
+			String[] RFCs = new String[fileArray.length];
+			for (int i = 0; i < RFCs.length; i++) {
+				RFCs[i] = fileArray[i].getName();
+				System.out.println(RFCs[i]);
+			}
+
+			clientInfo = hostname;
+			for (String i : RFCs) {
+				clientInfo += " ";
+				clientInfo += i;
+			}
+			System.out.println(clientInfo);
 			outStream.writeUTF("Hello from client");
 			outStream.writeUTF(clientInfo);
 
+			/*
 			Scanner console = new Scanner(System.in);
 			System.out.print("Enter option: ");
 			int input = console.nextInt();
@@ -49,9 +65,10 @@ public class Client {
 					console.close();
 					break;
 				default:
-					;
+					break;
 				}
 			}
+			*/
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

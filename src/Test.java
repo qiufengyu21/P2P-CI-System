@@ -9,7 +9,7 @@ public class Test {
 		for (int i = 0; i < RFCs.length; i++) {
 			RFCs[i] = fileArray[i].getName();
 		}
-		
+
 		System.out.println(Arrays.toString(RFCs));
 
 	}
