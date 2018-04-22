@@ -23,7 +23,11 @@ public class Client {
 			outStream = new DataOutputStream(peerSocket.getOutputStream());
 			hostname = java.net.InetAddress.getLocalHost().getHostAddress();
 
-			File f = new File("D:\\Projects\\P2P-CI-System\\RFCs");
+			Scanner console = new Scanner(System.in);
+			System.out.print("Enter the file path for RFCs: ");
+			String path = console.next();
+			// File f = new File("D:\\Projects\\P2P-CI-System\\RFCs");
+			File f = new File(path);
 			File fileArray[] = f.listFiles();
 			String[] RFCs = new String[fileArray.length];
 			for (int i = 0; i < RFCs.length; i++) {
@@ -41,34 +45,15 @@ public class Client {
 			outStream.writeUTF(clientInfo);
 
 			/*
-			Scanner console = new Scanner(System.in);
-			System.out.print("Enter option: ");
-			int input = console.nextInt();
-			boolean connected = true;
-			while (connected) {
-
-				switch (input) {
-				case 1:
-					outStream.writeInt(1);
-					System.out.print("Enter option: ");
-					input = console.nextInt();
-					break;
-				case 2:
-					outStream.writeInt(2);
-					System.out.print("Enter option: ");
-					input = console.nextInt();
-					break;
-				case 0:
-					outStream.writeInt(0);
-					peerSocket.close();
-					connected = false;
-					console.close();
-					break;
-				default:
-					break;
-				}
-			}
-			*/
+			 * Scanner console = new Scanner(System.in); System.out.print("Enter option: ");
+			 * int input = console.nextInt(); boolean connected = true; while (connected) {
+			 * 
+			 * switch (input) { case 1: outStream.writeInt(1);
+			 * System.out.print("Enter option: "); input = console.nextInt(); break; case 2:
+			 * outStream.writeInt(2); System.out.print("Enter option: "); input =
+			 * console.nextInt(); break; case 0: outStream.writeInt(0); peerSocket.close();
+			 * connected = false; console.close(); break; default: break; } }
+			 */
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
