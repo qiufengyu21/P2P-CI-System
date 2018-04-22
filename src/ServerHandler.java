@@ -47,13 +47,21 @@ public class ServerHandler implements Runnable {
 			}
 			activePeer.put(clientInfoArray[0], RFCArray);
 
-			/*
-			 * boolean connected = true; while (connected) { int option =
-			 * inputStream.readInt(); if (option == 1) {
-			 * System.out.println("Client asks me to print 1"); } else if (option == 2) {
-			 * System.out.println("Client asks me to print 2"); } else if (option == 0) {
-			 * System.out.println("Client closed"); connected = false; } else { ; } }
-			 */
+			boolean connected = true;
+			while (connected) {
+				int option = inputStream.readInt();
+				if (option == 1) {
+					outputStream.writeUTF(activePeer.keySet().toString());
+					System.out.println("Client asks me to print 1");
+				} else if (option == 2) {
+					System.out.println("Client asks me to print 2");
+				} else if (option == 0) {
+					System.out.println("Client closed");
+					connected = false;
+				} else {
+					;
+				}
+			}
 
 			System.out.println(Arrays.toString(activePeer.get(hostName)));
 

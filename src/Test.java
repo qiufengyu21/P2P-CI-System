@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Test {
 	public static void main(String[] args) {
@@ -10,7 +11,12 @@ public class Test {
 			RFCs[i] = fileArray[i].getName();
 		}
 
-		System.out.println(Arrays.toString(RFCs));
-
+		// System.out.println(Arrays.toString(RFCs));
+		ConcurrentHashMap<String, String[]> m = new ConcurrentHashMap<String, String[]>();
+		String[] a = {};
+		m.put("123", a);
+		m.put("234", a);
+		String output = m.keySet().toString();
+		System.out.println(output);
 	}
 }

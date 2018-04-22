@@ -32,7 +32,7 @@ public class Client {
 			String[] RFCs = new String[fileArray.length];
 			for (int i = 0; i < RFCs.length; i++) {
 				RFCs[i] = fileArray[i].getName();
-				System.out.println(RFCs[i]);
+				//System.out.println(RFCs[i]);
 			}
 
 			clientInfo = hostname;
@@ -40,20 +40,38 @@ public class Client {
 				clientInfo += " ";
 				clientInfo += i;
 			}
-			System.out.println(clientInfo);
+			//System.out.println(clientInfo);
 			outStream.writeUTF("Hello from client");
 			outStream.writeUTF(clientInfo);
+			System.out.println(inStream.readUTF()); // hello from server
 
-			/*
-			 * Scanner console = new Scanner(System.in); System.out.print("Enter option: ");
-			 * int input = console.nextInt(); boolean connected = true; while (connected) {
-			 * 
-			 * switch (input) { case 1: outStream.writeInt(1);
-			 * System.out.print("Enter option: "); input = console.nextInt(); break; case 2:
-			 * outStream.writeInt(2); System.out.print("Enter option: "); input =
-			 * console.nextInt(); break; case 0: outStream.writeInt(0); peerSocket.close();
-			 * connected = false; console.close(); break; default: break; } }
-			 */
+			System.out.print("Enter option: ");
+			int input = console.nextInt();
+			boolean connected = true;
+			while (connected) {
+
+				switch (input) {
+				case 1:
+					outStream.writeInt(1);
+					System.out.println(inStream.readUTF());
+					System.out.print("Enter option: ");
+					input = console.nextInt();
+					break;
+				case 2:
+					outStream.writeInt(2);
+					System.out.print("Enter option: ");
+					input = console.nextInt();
+					break;
+				case 0:
+					outStream.writeInt(0);
+					peerSocket.close();
+					connected = false;
+					console.close();
+					break;
+				default:
+					break;
+				}
+			}
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
