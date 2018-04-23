@@ -62,14 +62,14 @@ public class ServerHandler implements Runnable {
 			boolean connected = true;
 			while (connected) {
 				int option = inputStream.readInt(); // in: client option
-				if (option == 1) {
+				if (option == 1) { // list all available RFCs
 					String listAllRequest = inputStream.readUTF();
 					String responseMessage;
 					String statusCode = "400 Bad Request";
 					int count = 0;
 					for (Object o : activePeer.keySet()) {
 						if (activePeer.get(o).length != 0) {
-							//System.out.println(activePeer.get(o).length);
+							// System.out.println(activePeer.get(o).length);
 							count++;
 						}
 					}
@@ -94,8 +94,10 @@ public class ServerHandler implements Runnable {
 						}
 					}
 					outputStream.writeUTF(responseMessage); // out: list all peers
-				} else if (option == 2) {
+				} else if (option == 2) { // RFC lookup
 					System.out.println("Client asks me to print 2");
+				} else if (option == 3) { // download RFC from peer
+					
 				} else if (option == 0) {
 					System.out.println("Client closed");
 					connected = false;

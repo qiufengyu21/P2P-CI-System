@@ -59,7 +59,7 @@ public class Client {
 				outStream.writeInt(input);
 
 				switch (input) {
-				case 1: // list all
+				case 1: // list all available RFCs
 					String listAllReq = generateListAllRequest(hostname, uploadPort);
 					outStream.writeUTF(listAllReq);
 					String serverResponse = inStream.readUTF();
