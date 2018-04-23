@@ -64,7 +64,7 @@ public class ServerHandler implements Runnable {
 				int option = inputStream.readInt(); // in: client option
 				if (option == 1) { // list all available RFCs
 					String listAllRequest = inputStream.readUTF();
-					String responseMessage;
+					String responseMessage1;
 					String statusCode = "400 Bad Request";
 					int count = 0;
 					for (Object o : activePeer.keySet()) {
@@ -79,23 +79,41 @@ public class ServerHandler implements Runnable {
 					String[] listAllRequestPort = listAllRequestParsed[2].split(":");
 					if (!listAllRequestFirstLine[2].trim().equals("P2P-CI/1.0")) {
 						statusCode = "505 P2P-CI Version Not Supported";
-						responseMessage = "P2P-CI/1.0 " + statusCode + "\r\n";
+						responseMessage1 = "P2P-CI/1.0 " + statusCode + "\r\n";
 					} else if (count == 0) {
 						statusCode = "404 Not Found";
-						responseMessage = "P2P-CI/1.0 " + statusCode + "\r\n";
+						responseMessage1 = "P2P-CI/1.0 " + statusCode + "\r\n";
 					} else {
 						statusCode = "200 OK";
-						responseMessage = "P2P-CI/1.0 " + statusCode + "\r\n";
+						responseMessage1 = "P2P-CI/1.0 " + statusCode + "\r\n";
 						for (Object o : activePeer.keySet()) {
 							for (int i = 0; i < activePeer.get(o).length; i++) {
-								responseMessage += activePeer.get(o)[i][0].trim() + " " + activePeer.get(o)[i][3].trim()
+								responseMessage1 += activePeer.get(o)[i][0].trim() + " " + activePeer.get(o)[i][3].trim()
 										+ " " + activePeer.get(o)[i][1] + " " + activePeer.get(o)[i][2] + "\r\n";
 							}
 						}
 					}
-					outputStream.writeUTF(responseMessage); // out: list all peers
+					outputStream.writeUTF(responseMessage1); // out: list all peers
 				} else if (option == 2) { // RFC lookup
-					System.out.println("Client asks me to print 2");
+					String lookupRequest = inputStream.readUTF();
+					String responseMessage2;
+					String statusCode2 = "400 Bad Request";
+					String [] lookupRequestParsed = lookupRequest.split("\r\n");
+					String [] lookupRequestFirstLine = lookupRequestParsed[0].split(" ");
+					String [] lookupRequestHostName = lookupRequestParsed[1].split(":");
+					String [] lookupRequestPort = lookupRequestParsed[2].split(":");
+					String [] lookupRequestTitle = lookupRequestParsed[3].split(":");
+					for(Object o : activePeer.keySet()) {
+						for(int i = 0; i < activePeer.get(o).length; i++) {
+							
+						}
+					}
+					if (!lookupRequestFirstLine[2].trim().equals("P2P-CI/1.0")) {
+						statusCode2 = "505 P2P-CI Version Not Supported";
+						responseMessage2 = "P2P-CI/1.0 " + statusCode2 + "\r\n";
+					}
+					
+					
 				} else if (option == 3) { // download RFC from peer
 					
 				} else if (option == 0) {

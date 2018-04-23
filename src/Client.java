@@ -62,12 +62,18 @@ public class Client {
 				case 1: // list all available RFCs
 					String listAllReq = generateListAllRequest(hostname, uploadPort);
 					outStream.writeUTF(listAllReq);
-					String serverResponse = inStream.readUTF();
-					System.out.println(serverResponse);
+					String serverResponse1 = inStream.readUTF();
+					System.out.println(serverResponse1);
 					break;
 				case 2: // lookup
-					System.out.print("Enter option: ");
-					input = console.nextInt();
+					System.out.println("Enter the RFC number you want to lookup: ");
+					int lookupRFCNumber = console.nextInt();
+					System.out.println("Enter the RFC title you want to lookup: ");
+					String lookupRFCTitle = console.nextLine();
+					String lookupReq = generateLookupRequest(lookupRFCNumber, lookupRFCTitle, hostname, uploadPort);
+					outStream.writeUTF(lookupReq);
+					String serverResponse2 = inStream.readUTF();
+					System.out.println(serverResponse2);
 					break;
 				case 3: // download (get)
 
@@ -96,8 +102,14 @@ public class Client {
 	}
 
 	public static String generateListAllRequest(String hostname, int portnumber) {
-		String listAllReq = "LIST ALL" + " P2P-CI/1.0" + "\r\n" + "Host: " + hostname + "\r\n" + "Port: " + portnumber;
+		String listAllReq = "LIST ALL" + " P2P-CI/1.0" + "\r\n" + "Host: " + hostname + "\r\n" + "Port: " + portnumber
+				+ "\r\n";
 
 		return listAllReq;
+	}
+
+	public static String generateLookupRequest(int RFCNumber, String RFCTitle, String hostname, int portnumber) {
+		return "LOOKUP" + " " + "RFC" + RFCNumber + " " + "P2P-CI/1.0" + "\r\n" + "Host: " + hostname + "\r\n"
+				+ "Port: " + portnumber + "\r\n" + "Title: " + RFCTitle + "\r\n";
 	}
 }
