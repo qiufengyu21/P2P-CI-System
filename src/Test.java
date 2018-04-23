@@ -14,9 +14,8 @@ public class Test {
 		System.out.println(fileArray[0].getName());
 		
 		
-		
-		ConcurrentHashMap<String, String[][]> m = new ConcurrentHashMap<String, String[][]>();
-		String [] [] a = new String [3][5];
-		System.out.println(a.length);
+		String result = "";
+		String result1 = null;
+		System.out.println(result1);
 	}
 }

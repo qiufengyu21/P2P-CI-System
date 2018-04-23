@@ -88,8 +88,9 @@ public class ServerHandler implements Runnable {
 						responseMessage1 = "P2P-CI/1.0 " + statusCode + "\r\n";
 						for (Object o : activePeer.keySet()) {
 							for (int i = 0; i < activePeer.get(o).length; i++) {
-								responseMessage1 += activePeer.get(o)[i][0].trim() + " " + activePeer.get(o)[i][3].trim()
-										+ " " + activePeer.get(o)[i][1] + " " + activePeer.get(o)[i][2] + "\r\n";
+								responseMessage1 += activePeer.get(o)[i][0].trim() + " "
+										+ activePeer.get(o)[i][3].trim() + " " + activePeer.get(o)[i][1] + " "
+										+ activePeer.get(o)[i][2] + "\r\n";
 							}
 						}
 					}
@@ -98,24 +99,39 @@ public class ServerHandler implements Runnable {
 					String lookupRequest = inputStream.readUTF();
 					String responseMessage2;
 					String statusCode2 = "400 Bad Request";
-					String [] lookupRequestParsed = lookupRequest.split("\r\n");
-					String [] lookupRequestFirstLine = lookupRequestParsed[0].split(" ");
-					String [] lookupRequestHostName = lookupRequestParsed[1].split(":");
-					String [] lookupRequestPort = lookupRequestParsed[2].split(":");
-					String [] lookupRequestTitle = lookupRequestParsed[3].split(":");
-					for(Object o : activePeer.keySet()) {
-						for(int i = 0; i < activePeer.get(o).length; i++) {
-							
+					String[] lookupRequestParsed = lookupRequest.split("\r\n");
+					String[] lookupRequestFirstLine = lookupRequestParsed[0].split(" ");
+					String[] lookupRequestHostName = lookupRequestParsed[1].split(":");
+					String[] lookupRequestPort = lookupRequestParsed[2].split(":");
+					String[] lookupRequestTitle = lookupRequestParsed[3].split(":");
+					String RFCNumber2 = lookupRequestFirstLine[1].trim();
+					String RFCTitle2 = lookupRequestTitle[1].trim();
+					String result = "";
+					for (Object o : activePeer.keySet()) {
+						String[][] entry = activePeer.get(o);
+						for (int j = 0; j < activePeer.get(o).length; j++) {
+							if (entry[j][0].equals(RFCNumber2)) {
+								result += entry[j][0] + " " + entry[j][3] + " " + entry[j][1] + " " + entry[j][2];
+							}
 						}
+
 					}
 					if (!lookupRequestFirstLine[2].trim().equals("P2P-CI/1.0")) {
 						statusCode2 = "505 P2P-CI Version Not Supported";
 						responseMessage2 = "P2P-CI/1.0 " + statusCode2 + "\r\n";
+					} else if (result.equals("")) {
+						statusCode2 = "404 Not Found";
+						responseMessage2 = "P2P-CI/1.0 " + statusCode2 + "\r\n";
+					} else {
+						statusCode2 = "200 OK";
+						responseMessage2 = "P2P-CI/1.0 " + statusCode2 + "\r\n";
+						responseMessage2 += result;
+
 					}
-					
-					
+					outputStream.writeUTF(responseMessage2); // out: lookup
+
 				} else if (option == 3) { // download RFC from peer
-					
+
 				} else if (option == 0) {
 					System.out.println("Client closed");
 					connected = false;
