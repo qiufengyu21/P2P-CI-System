@@ -69,7 +69,7 @@ public class ServerHandler implements Runnable {
 					int count = 0;
 					for (Object o : activePeer.keySet()) {
 						if (activePeer.get(o).length != 0) {
-							System.out.println(activePeer.get(o).length);
+							//System.out.println(activePeer.get(o).length);
 							count++;
 						}
 					}
