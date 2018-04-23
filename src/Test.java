@@ -10,13 +10,13 @@ public class Test {
 		for (int i = 0; i < RFCs.length; i++) {
 			RFCs[i] = fileArray[i].getName();
 		}
-
-		// System.out.println(Arrays.toString(RFCs));
-		ConcurrentHashMap<String, String[]> m = new ConcurrentHashMap<String, String[]>();
-		String[] a = {};
-		m.put("123", a);
-		m.put("234", a);
-		String output = m.keySet().toString();
-		System.out.println(output);
+		
+		System.out.println(fileArray[0].getName());
+		
+		
+		
+		ConcurrentHashMap<String, String[][]> m = new ConcurrentHashMap<String, String[][]>();
+		String [] [] a = new String [3][5];
+		System.out.println(a.length);
 	}
 }

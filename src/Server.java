@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Server {
 	public static void main(String[] args) {
 		// int port = Integer.parseInt(args[0]);
-		ConcurrentHashMap<String, String[]> m = new ConcurrentHashMap<String, String[]>();
+		ConcurrentHashMap<String, String[][]> m = new ConcurrentHashMap<String, String[][]>();
 		ServerSocket serverSocket = null;
 		Socket socket = null;
 		try {
