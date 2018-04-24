@@ -2,7 +2,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerHandler implements Runnable {
@@ -13,7 +12,6 @@ public class ServerHandler implements Runnable {
 	private String clientInfo;
 	private int uploadPort;
 	private int numOfRFCs;
-	private int[] RFCs;
 
 	public ServerHandler(Socket socket, ConcurrentHashMap<String, String[][]> activePeer) {
 		this.socket = socket;
@@ -75,8 +73,6 @@ public class ServerHandler implements Runnable {
 					}
 					String[] listAllRequestParsed = listAllRequest.split("\r\n");
 					String[] listAllRequestFirstLine = listAllRequestParsed[0].split(" ");
-					String[] listAllRequestHostName = listAllRequestParsed[1].split(":");
-					String[] listAllRequestPort = listAllRequestParsed[2].split(":");
 					if (!listAllRequestFirstLine[2].trim().equals("P2P-CI/1.0")) {
 						statusCode = "505 P2P-CI Version Not Supported";
 						responseMessage1 = "P2P-CI/1.0 " + statusCode + "\r\n";
@@ -101,17 +97,14 @@ public class ServerHandler implements Runnable {
 					String statusCode2 = "400 Bad Request";
 					String[] lookupRequestParsed = lookupRequest.split("\r\n");
 					String[] lookupRequestFirstLine = lookupRequestParsed[0].split(" ");
-					String[] lookupRequestHostName = lookupRequestParsed[1].split(":");
-					String[] lookupRequestPort = lookupRequestParsed[2].split(":");
-					String[] lookupRequestTitle = lookupRequestParsed[3].split(":");
 					String RFCNumber2 = lookupRequestFirstLine[1].trim();
-					String RFCTitle2 = lookupRequestTitle[1].trim();
 					String result = "";
 					for (Object o : activePeer.keySet()) {
 						String[][] entry = activePeer.get(o);
 						for (int j = 0; j < activePeer.get(o).length; j++) {
 							if (entry[j][0].equals(RFCNumber2)) {
-								result += entry[j][0] + " " + entry[j][3] + " " + entry[j][1] + " " + entry[j][2];
+								result += entry[j][0] + " " + entry[j][3] + " " + entry[j][1] + " " + entry[j][2]
+										+ "\r\n";
 							}
 						}
 
@@ -131,6 +124,10 @@ public class ServerHandler implements Runnable {
 					outputStream.writeUTF(responseMessage2); // out: lookup
 
 				} else if (option == 3) { // download RFC from peer
+					String getRequest = inputStream.readUTF();
+					String responseMessage3;
+					String statusCode3 = "400 Bad Request";
+					
 
 				} else if (option == 0) {
 					System.out.println("Client closed");

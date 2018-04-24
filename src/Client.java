@@ -1,23 +1,34 @@
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Client {
+	public final static int FILE_SIZE = 6022386;
+
 	public static void main(String[] args) {
 		String serverIP = "localhost";
 		int serverPort = 7734;
 		int uploadPort = 7766;
 		Socket peerSocket = null;
 		Socket peerToPeerSocket = null;
+		ServerSocket serverSocket = null;
 		DataInputStream inStream = null;
 		DataOutputStream outStream = null;
+		DataInputStream peerInStream = null;
+		DataOutputStream peerOutStream = null;
 		String hostname = null;
 		String clientInfo;
+		FileOutputStream fos = null;
+		BufferedOutputStream bos = null;
+		int bytesRead;
+		int current = 0;
 
 		try {
 			peerSocket = new Socket(serverIP, serverPort);
@@ -27,11 +38,16 @@ public class Client {
 
 			Scanner console = new Scanner(System.in);
 			System.out.print("Enter the file path for RFCs: ");
-			String path = console.next();
+			String path = console.nextLine();
 			// File f = new File("D:\\Projects\\P2P-CI-System\\RFCs");
 			File f = new File(path);
 			File fileArray[] = f.listFiles();
 			clientInfo = hostname;
+
+			// spawn a new thread for handling incoming peers
+			serverSocket = new ServerSocket(uploadPort);
+			Thread t = new Thread(new P2PServer(f, serverSocket));
+			t.start();
 
 			outStream.writeUTF("Hello from client");// out: hello to server
 			outStream.writeUTF(clientInfo); // out: write host name to server
@@ -52,10 +68,10 @@ public class Client {
 			while (connected) {
 				System.out.println("Please enter option:");
 				System.out.println("1: List all available RFCs");
-				System.out.println("2: Look up for an RFC by title");
+				System.out.println("2: Look up for an RFC its number");
 				System.out.println("3: Download an RFC by RFC number");
 				System.out.println("0: Close connection");
-				input = console.nextInt();
+				input = Integer.parseInt(console.nextLine());
 				outStream.writeInt(input);
 
 				switch (input) {
@@ -66,9 +82,10 @@ public class Client {
 					System.out.println(serverResponse1);
 					break;
 				case 2: // lookup
-					System.out.println("Enter the RFC number you want to lookup: ");
-					int lookupRFCNumber = console.nextInt();
-					System.out.println("Enter the RFC title you want to lookup: ");
+					System.out.print("Enter the RFC number you want to lookup: ");
+					int lookupRFCNumber = Integer.parseInt(console.nextLine());
+
+					System.out.print("Enter the RFC title you want to lookup: ");
 					String lookupRFCTitle = console.nextLine();
 					String lookupReq = generateLookupRequest(lookupRFCNumber, lookupRFCTitle, hostname, uploadPort);
 					outStream.writeUTF(lookupReq);
@@ -76,7 +93,36 @@ public class Client {
 					System.out.println(serverResponse2);
 					break;
 				case 3: // download (get)
+					System.out.print("Enter the RFC number you want to download: ");
+					int downloadRFCNumber = Integer.parseInt(console.nextLine());
+					System.out.print("Enter the hostname you want to download the RFC from: ");
+					String downloadHostName = console.nextLine();
+					System.out.print("Enter the upload port number of the host: ");
+					int downloadPortNumber = Integer.parseInt(console.nextLine());
+					String getReq = generateGetRequest(downloadRFCNumber, hostname);
 
+					// connect to the uploading peer
+					peerToPeerSocket = new Socket(downloadHostName, downloadPortNumber);
+					peerInStream = new DataInputStream(peerToPeerSocket.getInputStream());
+					peerOutStream = new DataOutputStream(peerToPeerSocket.getOutputStream());
+					peerOutStream.writeUTF(getReq);
+					String response = peerInStream.readUTF();
+					System.out.println(response);
+
+					// source: http://www.rgagnon.com/javadetails/java-0542.html
+					byte[] mybytearray = new byte[FILE_SIZE];
+					fos = new FileOutputStream(path);
+					bos = new BufferedOutputStream(fos);
+					bytesRead = peerInStream.read(mybytearray, 0, mybytearray.length);
+					current = bytesRead;
+
+					do {
+						bytesRead = peerInStream.read(mybytearray, current, (mybytearray.length - current));
+						if (bytesRead >= 0)
+							current += bytesRead;
+					} while (bytesRead > -1);
+					bos.write(mybytearray, 0, current);
+					bos.flush();
 					break;
 				case 0: // close connection
 					peerSocket.close();
@@ -111,5 +157,10 @@ public class Client {
 	public static String generateLookupRequest(int RFCNumber, String RFCTitle, String hostname, int portnumber) {
 		return "LOOKUP" + " " + "RFC" + RFCNumber + " " + "P2P-CI/1.0" + "\r\n" + "Host: " + hostname + "\r\n"
 				+ "Port: " + portnumber + "\r\n" + "Title: " + RFCTitle + "\r\n";
+	}
+
+	public static String generateGetRequest(int RFCNumber, String hostname) {
+		return "GET" + " " + "RFC" + RFCNumber + " " + "P2P-CI/1.0" + "\r\n" + "Host: " + hostname + "\r\n" + "OS: "
+				+ System.getProperty("os.name") + "\r\n";
 	}
 }
