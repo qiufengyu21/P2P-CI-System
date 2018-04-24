@@ -124,13 +124,12 @@ public class ServerHandler implements Runnable {
 					outputStream.writeUTF(responseMessage2); // out: lookup
 
 				} else if (option == 3) { // download RFC from peer
-					String getRequest = inputStream.readUTF();
-					String responseMessage3;
-					String statusCode3 = "400 Bad Request";
-					
-
+					// the request peer talks directly to the upload peer.
+					// so no server involved in this option.
+					;
 				} else if (option == 0) {
-					System.out.println("Client closed");
+					activePeer.remove(mapKey);
+					System.out.println("Client " + clientInfo + " closed");
 					connected = false;
 				} else {
 					;

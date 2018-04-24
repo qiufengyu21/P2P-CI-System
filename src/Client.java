@@ -104,11 +104,14 @@ public class Client {
 					String response = peerInStream.readUTF();
 					System.out.println(response);
 
-					// source: http://www.rgagnon.com/javadetails/java-0542.html
+					if (Integer.parseInt(response.split("\r\n")[0].split(" ")[1].trim()) == 404) {
+						break;
+					}
+					// receive the file
 					int numberOfLines = peerInStream.readInt();
 					String fileName = peerInStream.readUTF();
 					String downloadedRFCPath = path + "/" + fileName;
-					
+
 					File fin = new File(downloadedRFCPath);
 					PrintStream output = new PrintStream(fin);
 					for (int i = 0; i < numberOfLines; i++) {

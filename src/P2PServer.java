@@ -17,8 +17,6 @@ public class P2PServer implements Runnable {
 	private Socket socket;
 	private DataInputStream inStream;
 	private DataOutputStream outStream;
-	private FileInputStream fis = null;
-	private BufferedInputStream bis = null;
 
 	public P2PServer(File f, ServerSocket serversocket) {
 		this.file = f;
@@ -66,11 +64,11 @@ public class P2PServer implements Runnable {
 					outStream.writeUTF(response);
 
 					// source: http://www.rgagnon.com/javadetails/java-0542.html
-					
+
 					outStream.writeInt(countLines(matchedPath));
 					outStream.writeUTF(matchedFilePath);
 					Scanner fileScan = new Scanner(responseFile);
-					while(fileScan.hasNextLine()) {
+					while (fileScan.hasNextLine()) {
 						outStream.writeUTF(fileScan.nextLine());
 					}
 					fileScan.close();
@@ -87,7 +85,7 @@ public class P2PServer implements Runnable {
 			}
 		}
 	}
-	
+
 	public static int countLines(String filename) throws IOException {
 		InputStream is = new BufferedInputStream(new FileInputStream(filename));
 		try {
