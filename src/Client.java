@@ -1,9 +1,8 @@
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -25,10 +24,6 @@ public class Client {
 		DataOutputStream peerOutStream = null;
 		String hostname = null;
 		String clientInfo;
-		FileOutputStream fos = null;
-		BufferedOutputStream bos = null;
-		int bytesRead;
-		int current = 0;
 
 		try {
 			peerSocket = new Socket(serverIP, serverPort);
@@ -107,22 +102,21 @@ public class Client {
 					peerOutStream = new DataOutputStream(peerToPeerSocket.getOutputStream());
 					peerOutStream.writeUTF(getReq);
 					String response = peerInStream.readUTF();
-					//System.out.println(response);
+					System.out.println(response);
 
 					// source: http://www.rgagnon.com/javadetails/java-0542.html
-					byte[] mybytearray = new byte[FILE_SIZE];
-					fos = new FileOutputStream(path + "\\test.txt");
-					bos = new BufferedOutputStream(fos);
-					bytesRead = peerInStream.read(mybytearray, 0, mybytearray.length);
-					current = bytesRead;
+					int numberOfLines = peerInStream.readInt();
+					String fileName = peerInStream.readUTF();
+					String downloadedRFCPath = path + "/" + fileName;
+					
+					File fin = new File(downloadedRFCPath);
+					PrintStream output = new PrintStream(fin);
+					for (int i = 0; i < numberOfLines; i++) {
+						String line = peerInStream.readUTF();
+						output.println(line);
+					}
+					output.close();
 
-					do {
-						bytesRead = peerInStream.read(mybytearray, current, (mybytearray.length - current));
-						if (bytesRead >= 0)
-							current += bytesRead;
-					} while (bytesRead > -1);
-					bos.write(mybytearray, 0, current);
-					bos.flush();
 					break;
 				case 0: // close connection
 					peerSocket.close();
