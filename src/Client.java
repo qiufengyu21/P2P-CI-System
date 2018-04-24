@@ -9,10 +9,8 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
-	public final static int FILE_SIZE = 6022386;
-
 	public static void main(String[] args) {
-		String serverIP = "54.173.208.228";
+		String serverIP = "54.204.103.206";
 		int serverPort = 7734;
 		int uploadPort = 7766;
 		Socket peerSocket = null;
@@ -140,6 +138,7 @@ public class Client {
 					peerSocket.close();
 					connected = false;
 					console.close();
+					
 					break;
 				default:
 					break;

@@ -10,6 +10,7 @@ public class Server {
 		Socket socket = null;
 		try {
 			serverSocket = new ServerSocket(7734);
+			System.out.println("Listening on port: 7734");
 		} catch (IOException e) {
 			System.out.println("Server cannot be initialized.");
 		}
