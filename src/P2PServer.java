@@ -63,8 +63,6 @@ public class P2PServer implements Runnable {
 							+ responseFile.length() + "\r\n" + "Content-Type: text/text" + "\r\n";
 					outStream.writeUTF(response);
 
-					// source: http://www.rgagnon.com/javadetails/java-0542.html
-
 					outStream.writeInt(countLines(matchedPath));
 					outStream.writeUTF(matchedFilePath);
 					Scanner fileScan = new Scanner(responseFile);
@@ -72,8 +70,7 @@ public class P2PServer implements Runnable {
 						outStream.writeUTF(fileScan.nextLine());
 					}
 					fileScan.close();
-					System.out.println("Download Successful!");
-					break;
+					System.out.println("upload Successful!");
 				} else {
 					String response = "P2P-CI/1.0 404 Not Found\r\n" + "Date: " + timeStamp + "\r\n" + "OS: " + OS
 							+ "\r\n";

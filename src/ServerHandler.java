@@ -124,9 +124,23 @@ public class ServerHandler implements Runnable {
 					outputStream.writeUTF(responseMessage2); // out: lookup
 
 				} else if (option == 3) { // download RFC from peer
-					// the request peer talks directly to the upload peer.
-					// so no server involved in this option.
-					;
+					numOfRFCs = inputStream.readInt(); // in: Number of RFCs
+					mapValue = new String[numOfRFCs][4];
+					mapKey = clientInfo + ":" + uploadPort;
+
+					for (int i = 0; i < numOfRFCs; i++) {
+						String addRequest = inputStream.readUTF();
+						String[] addRequestParsed = addRequest.split("\r\n");
+						String[] addRequestFirstLine = addRequestParsed[0].split(" ");
+						String[] addRequestHostName = addRequestParsed[1].split(":");
+						String[] addRequestPort = addRequestParsed[2].split(":");
+						String[] addRequestTitle = addRequestParsed[3].split(":");
+						mapValue[i][0] = addRequestFirstLine[1].trim();
+						mapValue[i][1] = addRequestHostName[1].trim();
+						mapValue[i][2] = addRequestPort[1].trim();
+						mapValue[i][3] = addRequestTitle[1].trim();
+					}
+					activePeer.put(mapKey, mapValue);
 				} else if (option == 0) {
 					activePeer.remove(mapKey);
 					System.out.println("Client " + clientInfo + " closed");

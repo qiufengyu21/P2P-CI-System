@@ -120,6 +120,21 @@ public class Client {
 					}
 					output.close();
 
+					// register new RFC to server
+					System.out.println("Download successful. Updating new RFC to server...");
+					f = new File(path);
+					fileArray = f.listFiles();
+					clientInfo = hostname;
+
+					numOfRFCs = fileArray.length;
+					outStream.writeInt(numOfRFCs); // out: write number of RFCs to server
+
+					for (int i = 0; i < numOfRFCs; i++) {
+						String addRequest = generateAddRequest(fileArray[i].getName(), hostname, uploadPort);
+						outStream.writeUTF(addRequest); // out: Add request to the server
+					}
+
+					System.out.println("Update successful");
 					break;
 				case 0: // close connection
 					peerSocket.close();
