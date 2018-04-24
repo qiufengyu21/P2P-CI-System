@@ -107,11 +107,11 @@ public class Client {
 					peerOutStream = new DataOutputStream(peerToPeerSocket.getOutputStream());
 					peerOutStream.writeUTF(getReq);
 					String response = peerInStream.readUTF();
-					System.out.println(response);
+					//System.out.println(response);
 
 					// source: http://www.rgagnon.com/javadetails/java-0542.html
 					byte[] mybytearray = new byte[FILE_SIZE];
-					fos = new FileOutputStream(path);
+					fos = new FileOutputStream(path + "\\test.txt");
 					bos = new BufferedOutputStream(fos);
 					bytesRead = peerInStream.read(mybytearray, 0, mybytearray.length);
 					current = bytesRead;

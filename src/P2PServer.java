@@ -59,13 +59,12 @@ public class P2PServer implements Runnable {
 
 				if (matchedFilePath != null) {
 					String response = "P2P-CI/1.0 200 OK\r\n" + "Date: " + timeStamp + "\r\n" + "OS: " + OS + "\r\n"
-							+ "Last-Modified: " + responseFile.lastModified() + "\r\n" + "Content-Length: "
+							+ "Last-Modified: " + new Date(responseFile.lastModified()) + "\r\n" + "Content-Length: "
 							+ responseFile.length() + "\r\n" + "Content-Type: text/text" + "\r\n";
 					outStream.writeUTF(response);
 
 					// source: http://www.rgagnon.com/javadetails/java-0542.html
 					byte[] mybytearray = new byte[(int) responseFile.length()];
-					System.out.println((int) responseFile.length());
 					fis = new FileInputStream(responseFile);
 					bis = new BufferedInputStream(fis);
 					bis.read(mybytearray, 0, mybytearray.length);

@@ -29,5 +29,7 @@ public class Test {
 		System.out.println(f.getAbsolutePath());
 		String a = f.getAbsolutePath() + "\\"+ matchedFilePath;
 		System.out.println(a);
+		File FILE = new File(a);
+		System.out.println(new Date(FILE.lastModified()));
 	}
 }
