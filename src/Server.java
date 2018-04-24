@@ -13,6 +13,7 @@ public class Server {
 			System.out.println("Listening on port: 7734");
 		} catch (IOException e) {
 			System.out.println("Server cannot be initialized.");
+			e.printStackTrace();
 		}
 
 		while (true) {
