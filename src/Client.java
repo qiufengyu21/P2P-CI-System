@@ -12,7 +12,7 @@ public class Client {
 	public final static int FILE_SIZE = 6022386;
 
 	public static void main(String[] args) {
-		String serverIP = "localhost";
+		String serverIP = "54.173.208.228";
 		int serverPort = 7734;
 		int uploadPort = 7766;
 		Socket peerSocket = null;
