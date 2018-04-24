@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Client {
 	public static void main(String[] args) {
-		String serverIP = "54.204.103.206";
+		String serverIP = "localhost";
 		int serverPort = 7734;
 		int uploadPort = 7766;
 		Socket peerSocket = null;
@@ -38,8 +38,9 @@ public class Client {
 			clientInfo = hostname;
 
 			// spawn a new thread for handling incoming peers
+			boolean p2pServerConnected = true;
 			serverSocket = new ServerSocket(uploadPort);
-			Thread t = new Thread(new P2PServer(f, serverSocket));
+			Thread t = new Thread(new P2PServer(f, serverSocket, p2pServerConnected));
 			t.start();
 
 			outStream.writeUTF("Hello from client");// out: hello to server
@@ -138,11 +139,13 @@ public class Client {
 					peerSocket.close();
 					connected = false;
 					console.close();
-					
+					p2pServerConnected = false;
 					break;
+
 				default:
 					break;
 				}
+				System.out.println("ByeBye");
 			}
 
 		} catch (UnknownHostException e) {

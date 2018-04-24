@@ -17,10 +17,12 @@ public class P2PServer implements Runnable {
 	private Socket socket;
 	private DataInputStream inStream;
 	private DataOutputStream outStream;
+	private boolean connected;
 
-	public P2PServer(File f, ServerSocket serversocket) {
+	public P2PServer(File f, ServerSocket serversocket, boolean connected) {
 		this.file = f;
 		this.serverSocket = serversocket;
+		this.connected = connected;
 	}
 
 	@Override
@@ -29,7 +31,8 @@ public class P2PServer implements Runnable {
 		// DateTimeFormatter.ofPattern("RFC_1123_DATE_TIME");
 		String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
 		String OS = System.getProperty("os.name");
-		while (true) {
+		while (connected) {
+			System.out.println(connected);
 			try {
 				socket = serverSocket.accept();
 				inStream = new DataInputStream(socket.getInputStream());
