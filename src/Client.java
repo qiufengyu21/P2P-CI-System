@@ -140,6 +140,7 @@ public class Client {
 					connected = false;
 					console.close();
 					p2pServerConnected = false;
+					System.exit(0);
 					break;
 
 				default:

@@ -149,7 +149,7 @@ public class ServerHandler implements Runnable {
 					activePeer.put(mapKey, mapValue);
 				} else if (option == 0) {
 					activePeer.remove(mapKey);
-					System.out.println("Removing " + clientInfo + "registered entry...");
+					System.out.println("Removing host " + clientInfo + " registered entry...");
 					System.out.println("Client " + clientInfo + " closed");
 					System.out.println();
 					connected = false;
