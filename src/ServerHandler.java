@@ -63,6 +63,7 @@ public class ServerHandler implements Runnable {
 				try {
 					option = inputStream.readInt(); // in: client option
 				} catch (Exception e) {
+					System.out.println("************************************");
 					System.out.println("Client disconnected unexpectedly...");
 				}
 				if (option == 1) { // list all available RFCs
@@ -150,6 +151,7 @@ public class ServerHandler implements Runnable {
 					activePeer.remove(mapKey);
 					System.out.println("Removing " + clientInfo + "registered entry...");
 					System.out.println("Client " + clientInfo + " closed");
+					System.out.println();
 					connected = false;
 				} else {
 					;
