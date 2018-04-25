@@ -145,7 +145,6 @@ public class Client {
 				default:
 					break;
 				}
-				System.out.println("ByeBye");
 			}
 
 		} catch (UnknownHostException e) {

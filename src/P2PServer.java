@@ -32,7 +32,6 @@ public class P2PServer implements Runnable {
 		String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
 		String OS = System.getProperty("os.name");
 		while (connected) {
-			System.out.println(connected);
 			try {
 				socket = serverSocket.accept();
 				inStream = new DataInputStream(socket.getInputStream());

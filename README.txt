@@ -17,5 +17,18 @@ Instructions to run the program:
 	6. there are some sample RFC files in the P2P-CI-System/RFCs folder
 	
 - After starting up the client:
-	1. Enter specific option number to perform different actions
-	2. Enter 0 to close the connection with the server
+	Enter specific option number to perform different actions
+	Option 1: List all available RFCs
+	
+	Option 2: Lookup for a specific RFC
+		- Enter the RFC number you want to lookup. e.g. enter the number 2 for RFC2, don't enter "RFC2"!
+		- Enter the RFC title you want to lookup.
+	
+	Option 3: Download an RFC
+		- IMPORTANT: Perform option 1 or 2 to get information about the hosts before downloading an RFC.
+		- Enter RFC number that you want to download. e.g. enter the number 6 for RFC6, don't enter "RFC6"!
+		- Enter host name which you want to download from. e.g. 172.31.93.3
+		- Enter this host's upload port number. e.g. 7766
+	
+	Option 0: Close connection with the server
+	
