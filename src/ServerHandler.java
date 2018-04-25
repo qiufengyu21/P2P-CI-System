@@ -59,7 +59,12 @@ public class ServerHandler implements Runnable {
 
 			boolean connected = true;
 			while (connected) {
-				int option = inputStream.readInt(); // in: client option
+				int option = 0;
+				try {
+					option = inputStream.readInt(); // in: client option
+				} catch (Exception e) {
+					System.out.println("Client disconnected unexpectedly...");
+				}
 				if (option == 1) { // list all available RFCs
 					String listAllRequest = inputStream.readUTF();
 					String responseMessage1;
@@ -143,6 +148,7 @@ public class ServerHandler implements Runnable {
 					activePeer.put(mapKey, mapValue);
 				} else if (option == 0) {
 					activePeer.remove(mapKey);
+					System.out.println("Removing " + clientInfo + "registered entry...");
 					System.out.println("Client " + clientInfo + " closed");
 					connected = false;
 				} else {
@@ -151,6 +157,7 @@ public class ServerHandler implements Runnable {
 			}
 
 		} catch (IOException e) {
+			System.out.println("Client closed unexpectedly.");
 			e.printStackTrace();
 		}
 	}
