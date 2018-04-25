@@ -22,6 +22,7 @@ public class Client {
 		DataOutputStream peerOutStream = null;
 		String hostname = null;
 		String clientInfo;
+		String path = args[2];
 
 		try {
 			peerSocket = new Socket(serverIP, serverPort);
@@ -30,8 +31,7 @@ public class Client {
 			hostname = java.net.InetAddress.getLocalHost().getHostAddress();
 
 			Scanner console = new Scanner(System.in);
-			System.out.print("Enter the file path for RFCs: ");
-			String path = console.nextLine();
+
 			// File f = new File("D:\\Projects\\P2P-CI-System\\RFCs");
 			File f = new File(path);
 			File fileArray[] = f.listFiles();
