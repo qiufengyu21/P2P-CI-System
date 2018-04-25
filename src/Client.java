@@ -10,9 +10,9 @@ import java.util.Scanner;
 
 public class Client {
 	public static void main(String[] args) {
-		String serverIP = "localhost";
+		String serverIP = args[0];
 		int serverPort = 7734;
-		int uploadPort = 7766;
+		int uploadPort = Integer.parseInt(args[1]);
 		Socket peerSocket = null;
 		Socket peerToPeerSocket = null;
 		ServerSocket serverSocket = null;
