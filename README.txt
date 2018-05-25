@@ -11,7 +11,7 @@ Instructions to run the program:
 - Client side:
 	1. naviage into P2P-CI-System/src/
 	2. javac *.java
-	3. java Client serverIP uploadPort
+	3. java Client [serverIP] [uploadPort] [RFC Path]
 	4. after running, the client will prompt you for the location of the RFC files
 	5. note that the RFC files have to follow a certain naming convention
 	6. there are some sample RFC files in the P2P-CI-System/RFCs folder
