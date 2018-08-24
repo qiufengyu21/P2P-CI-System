@@ -1,6 +1,4 @@
-CSC573 Project1 P2P-CI System
-Qiufeng Yu(qyu4)
-Mingxuan Shi(mshi4)
+P2P-CI System
 
 Instructions to run the program:
 - Server side:
